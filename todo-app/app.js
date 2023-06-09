@@ -48,29 +48,60 @@ function listTodo(todo) {
     .join(" ");
 }
 
+// function to store and  display all todo
+function setData(todoList) {
+  storeTodo(todoList);
+  listTodo(todoList);
+}
+
 // function to add todo to list
 function addTodo(e) {
   if (!formInput.value) return;
   const formValue = formInput.value;
   clearInput();
   allTodo.push(formValue);
-  storeTodo(allTodo);
-  listTodo(allTodo);
+  // storeTodo(allTodo);
+  // listTodo(allTodo);
+  setData(allTodo);
 }
 
-function removeSingleTodo(id) {
-  allTodo = allTodo.filter((todo, i) => i != id);
-  storeTodo(allTodo);
-  listTodo(allTodo);
-}
-
+// function to delete todo
 function deleteTodo(e) {
   if (e.target.tagName !== "I") return;
-  const todo_div = e.target.closest(".todo");
-  removeSingleTodo(todo_div.dataset.id);
+  const todo_id = e.target.closest(".todo").dataset.id;
+  allTodo = allTodo.filter((todo, i) => i != todo_id);
+  // storeTodo(allTodo);
+  // listTodo(allTodo);
+  setData(allTodo);
+}
+
+// function to save edited todo
+function editContent(element, id, e) {
+  if (e.key === "Enter") {
+    element.contentEditable = false;
+    allTodo[id] = element.textContent;
+    element.removeEventListener(
+      "keypress",
+      editContent.bind(this, element, id)
+    );
+    setData(allTodo);
+  }
+}
+
+// function to edit todo
+function editTodo(e) {
+  if (e.target.tagName !== "P") return;
+  const paragraphEl = e.target;
+  const id = paragraphEl.closest(".todo").dataset.id;
+  paragraphEl.contentEditable = true;
+  paragraphEl.addEventListener(
+    "keypress",
+    editContent.bind(this, paragraphEl, id)
+  );
 }
 
 // Event listeners
 clearForm.addEventListener("click", clearInput);
 addTodoBtn.addEventListener("click", addTodo);
 todoContainer.addEventListener("click", deleteTodo);
+todoContainer.addEventListener("dblclick", editTodo);

@@ -74,12 +74,18 @@ p {
   padding: 10px 20px;
   align-items: center;
 }
+.todo:focus,
+.todo:active {
+  outline: none;
+}
 .todo p {
   font-size: 1.4rem;
   border: 1px solid #666;
   padding-block: 10px;
   padding-inline: 20px;
+  /* background-color: red; */
 }
+
 .todo i {
   font-size: 1.4rem;
   cursor: pointer;

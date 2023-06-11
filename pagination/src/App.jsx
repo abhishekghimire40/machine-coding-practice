@@ -12,20 +12,23 @@ function App() {
         `https://dummyjson.com/products?limit=10&skip=${(page - 1) * 10}`
       );
       const data = await res.json();
-      console.log(data);
       setProducts(data.products);
     }
     fetchProducts();
   }, [page]);
 
+  const pageHandler = function (id) {
+    setPage(id);
+  };
+
   const productElements = products.map((product) => (
-    <SingleProduct product={product} id={product.id} />
+    <SingleProduct product={product} key={product.id} />
   ));
 
   return (
     <>
       <div className="products">{productElements}</div>
-      <Paginate page={page} setPage={setPage} />
+      <Paginate page={page} pageHandler={pageHandler} products={products} />
     </>
   );
 }

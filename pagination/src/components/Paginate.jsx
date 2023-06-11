@@ -1,8 +1,29 @@
-const Paginate = ({ page, setPage }) => {
+const Paginate = ({ page, pageHandler, products }) => {
   return (
-    <div>
-      {page === 1 || page === 10 ? (
-        <div>
+    <div className="pagination">
+      {page > 1 && <span onClick={() => pageHandler(page - 1)}>Prev</span>}
+      {[...Array(products.length)].map((_, i) => {
+        return (
+          <span
+            className={page === i + 1 ? "active" : ""}
+            onClick={() => pageHandler(i + 1)}
+            key={i}
+          >
+            {" "}
+            {i + 1}{" "}
+          </span>
+        );
+      })}
+      {page < 10 && <span onClick={() => pageHandler(page + 1)}>Next</span>}
+    </div>
+  );
+};
+
+export default Paginate;
+
+/**
+ {page === 1 || page === 10 ? (
+        <>
           <button
             id={1}
             onClick={() => {
@@ -22,9 +43,9 @@ const Paginate = ({ page, setPage }) => {
           <button id={10} onClick={() => setPage(10)}>
             {page == 10 ? 10 : "last"}
           </button>
-        </div>
+        </>
       ) : (
-        <div>
+        <>
           <button
             id={1}
             onClick={() => {
@@ -69,10 +90,6 @@ const Paginate = ({ page, setPage }) => {
           >
             Last
           </button>
-        </div>
+        </>
       )}
-    </div>
-  );
-};
-
-export default Paginate;
+ */
